@@ -11,16 +11,21 @@ import { loginApi } from '../../../App.js';
 import { useContext } from 'react';
 import { Button, Text, View } from 'react-native';
 import SearchScreen from '../searchScreen/searchScreen.js';
-import { TextInput } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+// Messages screen stack for stack and tab navigation
+// Also houses the header for settings and search, this should be moved out in the future
+
 function MessagesScreenStack(route, navigation) {
+
+  // Create stack navigation
   const MessagesStack = createNativeStackNavigator();
+
+  // Global user state
   const { isSignedIn, signIn, name, setName } = useContext(loginApi)
-  //console.log(route.route.params)
+
+
   return (
     <MessagesStack.Navigator
-      //screenOptions= {{headerShown: false}}
-      //screenOptions={{navigationBarHidden: true}}
     >
       <MessagesStack.Screen 
       
@@ -44,7 +49,7 @@ function MessagesScreenStack(route, navigation) {
                 >
 
                   <TouchableOpacity
-                  //onPress={() => navigation.navigate('Settings', {setSignIn : route.route.params.signIn})}
+                 
                   onPress={() => navigation.navigate('Search')}
                   >
                     <Image
@@ -60,7 +65,7 @@ function MessagesScreenStack(route, navigation) {
                   style = {styles.button}
                 >
                   <TouchableOpacity
-                  //onPress={() => navigation.navigate('Settings', {setSignIn : route.route.params.signIn})}
+                  
                   onPress={() => navigation.navigate('Settings')}
                   >
                     <Image

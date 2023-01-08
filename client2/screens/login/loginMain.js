@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ScrollView } from 'react-native';
-import { FlatList } from 'react-native';
 import { Image } from 'react-native';
 import { useState } from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -17,11 +11,19 @@ import { loginApi } from '../../App';
 import messaging from '@react-native-firebase/messaging';
 import { testUrl, url } from '../../keys';
 
+// Creating login screen with passed in hooks from main app and navigation
 const LoginScreen = ({route, navigation}) => {
+
+  // Username request
   const [usernameLocal, setUsernameLocal] = useState('')
+
+  // Password request
   const [passwordEntry, setPasswordEntry] = useState('')
+
+  // Hooks for global state, containing current user info
   const { isSignedIn, signIn, name, setName, token, setToken, username, setUsername, notifToken, setNotifToken } = useContext(loginApi)
 
+  // Gets the FCM notification token
   const getFCMToken = async () => {
     try {
       const newToken = await messaging().getToken();
@@ -31,6 +33,7 @@ const LoginScreen = ({route, navigation}) => {
     }
   }
 
+  // On load, get the FCM token
   useEffect(() => {
     getFCMToken();
   },[]);
@@ -72,7 +75,6 @@ const LoginScreen = ({route, navigation}) => {
 
 
       <View
-      //style = {loginMainStyles.center}
       >
 
         <View
@@ -82,6 +84,8 @@ const LoginScreen = ({route, navigation}) => {
           <TouchableOpacity
             style = {loginMainStyles.loginButton}
             title = "Submit"
+
+            // Login button, requests a user with the given username and password from server
             onPress = {() => {
               try {
                 
@@ -105,6 +109,7 @@ const LoginScreen = ({route, navigation}) => {
                             console.log(jsonRes)
                             console.log("Successful login");
 
+                            // Set the global hooks
                             setName(jsonRes.firstname)
                             setToken(jsonRes.password)
                             setUsername(jsonRes.username)

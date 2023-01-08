@@ -17,16 +17,25 @@ import { useContext } from 'react';
 import { testUrl } from '../../../keys';
 import { url } from '../../../keys';
 
+// Search screen for locating users
 const SearchScreen = ({route, navigation}) => {
-    //console.log(route.params)
+
+    // Global user state
     const { isSignedIn, signIn, token, setToken, name, setName, username, setUsername } = useContext(loginApi)
+
+    // Input of the search
     const [searchInput, setSearchInput] = useState('')
+
+    // Returned search data
     const [searchData, setSearchData] = useState('')
 
+    // On text box alteration, send a database search and display results
     useEffect(() => {
 
+        // Dont search if the input is nothing
         if (searchInput !== '') {
-            
+        
+        // Fetch the users
         fetch(testUrl + '/search-users', {
             method: 'POST',
             headers: {
@@ -81,7 +90,6 @@ const SearchScreen = ({route, navigation}) => {
                 >
                   <TextInput
                   
-                  //textContentType='none'
                     style = {styles.textInput}
                     placeholder= 'Username'
                     onChangeText={setSearchInput}
@@ -120,6 +128,8 @@ const SearchScreen = ({route, navigation}) => {
             renderItem={({item}) => 
             <TouchableOpacity style = {styles.existingChat}
             
+            // Try to create a new direct message, if it exists, go to that DM.
+            // Otherwise, create it.
             onPress = { () => {
 
                 fetch(testUrl + '/new-direct-message', {

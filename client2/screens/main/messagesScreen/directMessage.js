@@ -11,17 +11,34 @@ import {createContext, useMemo, useCallback, useContext} from 'react'
 import { loginApi } from '../../../App';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { testUrl, url } from '../../../keys';
+import { loadTime } from '../../../keys';
 
 
+// Direct message screen, is given the non-local user through the route, and the local user by global state
 const DirectMessage = ({route, navigation}) => {
+
+    // The user that is not using the local device
     const userTwo = route.params.userTwo;
+
+    // The input message
     const [input, setInput] = useState('');
+
+    // The text state
     const [text, setText] = useState("");
+
+    // The size of the screen used when opening keyboard
     const [screenSize, setScreenSize] = useState(425);
+
+    // The message
     const [message, setMessage] = useState('');
+
+    // Global state of local user
     const { isSignedIn, signIn, name, setName, token, setToken, username, setUsername } = useContext(loginApi)
    
+    // On component mount
     useEffect(() => {
+
+      // Set the title
       navigation.setOptions({
         title: "Direct Message",
         headerStyle: {
@@ -29,6 +46,7 @@ const DirectMessage = ({route, navigation}) => {
         },
         headerTintColor: '#EBF2FA',
         
+        // Create the header
         headerLeft: () => (
           <HeaderBackButton
             onPress={() => {
@@ -42,9 +60,12 @@ const DirectMessage = ({route, navigation}) => {
     )})
     }, [])
 
+    // Temporary throttling method for limiting amount of server requests for testing
     useEffect(() => {
       const interval = setInterval(() => {
 
+        // Get the direct message chats between the two users, this needs additional security
+        // in the future. Endpoint not secure, no user auth (you can just request any two user's chats)
         fetch(testUrl + '/get-direct-message-chats', {
           method: 'POST',
           headers: {
@@ -79,7 +100,7 @@ const DirectMessage = ({route, navigation}) => {
         console.log(err);
     });
   
-    }, 1000);
+    }, loadTime);
     return () => clearInterval(interval);
     })
   
@@ -131,12 +152,15 @@ const DirectMessage = ({route, navigation}) => {
             placeholder = "Send a message"
             enablesReturnKeyAutomatically = {true}
             returnKeyType = 'send'
+
+            // Change the screen size on keyboard enter
             onPressIn={() => {
               if (screenSize === 425) {
                 setScreenSize(250);
               }
             }}
-  
+            
+            // Send the message to the server
             onSubmitEditing={() => {
   
                 try {

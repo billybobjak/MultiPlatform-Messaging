@@ -15,18 +15,28 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { loginApi } from '../../../App';
 import { url, testUrl } from '../../../keys'
+import { loadTime } from '../../../keys';
 
+// Main screen that holds all active conversations
+// Improvements for this include blocking users, last time message was sent, sent/recieve status
 
 const MessagesScreen = ({navigation}) => {
+
+    // User conversations are processed from server into input and displayed with flatlist
     const [input, setData] = useState([])
+
+    // Global user state
     const { isSignedIn, signIn, name, setName, username, setUsername, token, setToken } = useContext(loginApi)
     
+    // Temporary throttling for server testing
     useEffect(() => {
       const interval = setInterval(() => {
-        console.log("Interval triggered");
 
     try {
 
+      // Get the open chats with the user, verified with password token
+      // The token stored is the hashed password from the server.
+      // This should be changed to expire and be seperate identifier than hashed PW in future
       fetch(testUrl + '/get-chats', {
           method: 'POST',
           headers: {
@@ -67,7 +77,7 @@ const MessagesScreen = ({navigation}) => {
       console.log("error here")
       console.log(err);
     }
-  }, 1000);
+  }, loadTime);
   return () => clearInterval(interval);
     })
 

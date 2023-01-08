@@ -2,5 +2,7 @@
 
 keys.js
 
-newBackend/node-modules
+newBackend/node_modules
+
+node_modules
 

@@ -1,18 +1,9 @@
 import * as React from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ScrollView } from 'react-native';
-import { FlatList } from 'react-native';
-import { Image } from 'react-native';
-import { useState } from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { TextInput } from 'react-native-paper';
-import { SafeAreaView } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { useEffect } from 'react';
 
+// Temporary discover screen placeholder
+// In the future, bluetooth/GPS local user connection will be here
 const DiscoverScreen = ({navigation}) => {
 
     return (

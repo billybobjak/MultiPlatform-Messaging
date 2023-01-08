@@ -14,11 +14,23 @@ import { StyleSheet } from 'react-native';
 import { useEffect } from 'react';
 import { testUrl, url } from '../../keys';
 
+
+// Signup screen, with navigation to and from login screen
 const SignupScreen = ({navigation}) => {
+
+  // First name signup request
   const [firstName, setFirstName] = useState('');
+
+  // Last name signup request
   const [lastName, setLastName] = useState('');
+
+  // Email signup request
   const [email, setEmail] = useState('')
+
+  // Password signup request
   const [password, setPassword] = useState('')
+
+  // Username signup request
   const [username, setUsername] = useState('')
 
     return (
@@ -72,6 +84,10 @@ const SignupScreen = ({navigation}) => {
       <Button
       style = {loginMainStyles.loginButton}
       title = "Submit"
+
+
+      // Signup button, sends JSON to server to see if username or email exist
+      // !!! Additional error checking needed !!!
       onPress = {() => {
         try {
             

@@ -7,20 +7,21 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { useEffect } from 'react';
 import LoginScreen from './screens/login/loginMain.js'
 import MessagesScreenStack from './screens/main/messagesScreen/messageScreenStack'
 import DiscoverScreenStack from './screens/main/discoverScreen/discoverScreenStack.js';
 import SignupScreen from './screens/login/signupMain.js';
-import { Alert } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 import {createContext, useMemo, useCallback} from 'react'
+import CameraScreenStack from './screens/main/cameraScreen/cameraScreenStack.js';
 
-
+// Create a stack for the bottom tab nav
 const Stack = createBottomTabNavigator();
+
+// Create a stack for the login interface
 const Login = createNativeStackNavigator();
 
 
+// Login API for global state
 export const loginApi = createContext({
   isSignedIn: false,
   signIn: () => {},
@@ -38,16 +39,25 @@ export const loginApi = createContext({
 
 export default function App() {
 
-
+  // User sign in state
   const [isSignedIn, signIn] = useState(false);
+
+  // User token
   const [token, setToken] = useState('')
+
+  // User name
   const [name, setName] = useState('')
+
+  // User username
   const [username, setUsername] = useState('')
+
+  // FCM token
   const [notifToken, setNotifToken] = useState('')
 
+  // API for setting global state
   const getApi = useMemo(() => ({isSignedIn, signIn, token, setToken, name, setName, username, setUsername, notifToken, setNotifToken}), [isSignedIn]);
 
-
+    // If signed in, show the main screen
     if (isSignedIn) {
 
       return (
@@ -57,13 +67,22 @@ export default function App() {
 
             <Stack.Navigator
             screenOptions= {{headerShown: false}}
+            initialRouteName = 'Camera'
             >
-              
+
+
               <Stack.Screen
                 name = 'Messages'
                 component = {MessagesScreenStack}
-                //initialParams ={{signIn, name, token}}
               />
+
+              <Stack.Screen
+                name = 'Camera'
+                component = {CameraScreenStack}
+              >
+                
+
+              </Stack.Screen>
 
               <Stack.Screen
                 name = 'Discover'
@@ -77,7 +96,8 @@ export default function App() {
 
     </loginApi.Provider>
     )}
-
+    
+    // If not signed in, show the login screen
     else {
       return (
         <loginApi.Provider value={getApi}>
@@ -89,9 +109,6 @@ export default function App() {
               <Login.Screen
               name = "Login Home"
               component = {LoginScreen}
-              
-              //initialParams = {{setToken, setName}}
-              //initialParams = {{setSignIn, setToken, setName}}
               options= {{title: "Welcome to AppTest"}}
               >
     

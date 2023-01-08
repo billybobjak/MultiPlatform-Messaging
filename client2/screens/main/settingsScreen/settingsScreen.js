@@ -6,10 +6,16 @@ import { loginApi } from '../../../App';
 import { useContext } from 'react';
 import messaging from '@react-native-firebase/messaging';
 
+
+// Screen for settings
+// In the future, add theme selection, personalization, privacy controls, etc... in future
 const SettingsScreen = ({route}) => {
 
+
+    // Global user state
     const { isSignedIn, signIn, token, setToken, name, setName } = useContext(loginApi)
     
+    // Delete the FCM token on logout
     const deleteFCMToken = async () => {
       try {
         await messaging().deleteToken();
