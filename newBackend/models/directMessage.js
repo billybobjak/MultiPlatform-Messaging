@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Chat = require("../models/chat").schema;
 
-
+// Schema for a direct message
 const directMessageSchema = mongoose.Schema({
     owner: {type : String, required: true},
     participants: {type: Array, required: true},

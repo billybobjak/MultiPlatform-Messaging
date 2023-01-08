@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Schema for a chat
 const chatSchema = mongoose.Schema({
     source: {type: String, required: true},
     destination: {type: String, required: true},

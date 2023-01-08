@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt')
 
+// Schema for a user
 const userSchema = mongoose.Schema({
     firstname: {type: String, required: true},
     lastname: {type: String, required: true},
@@ -11,6 +12,7 @@ const userSchema = mongoose.Schema({
     notifToken: {type: String, default: null}
 });
 
+// Hash the password of the user
 userSchema.pre('save', function(next) {
     var user = this
     console.log("This is where pre save runs")
@@ -35,6 +37,7 @@ userSchema.pre('save', function(next) {
     }
 })
 
+// Compare the password to hashed password
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
 
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {

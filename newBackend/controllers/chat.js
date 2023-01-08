@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const admin = require('firebase-admin');
 const serviceAccount = require("../serviceAccountKey.json");
 
+// Create admin credentials
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
     });
@@ -45,6 +46,7 @@ exports.createUser = (req, res, next) => {
             });
 };
 
+// Retrieve the user with username and password
 exports.getUserByUsername = (req, res, next) => {
     User.findOne({username: req.body.username})
         .then((post) => {
@@ -77,6 +79,7 @@ exports.getUserByUsername = (req, res, next) => {
         
 };
 
+// Return searched users
 exports.searchUsers = (req, res, next) => {
     let results = []
     User.find({ "username": { "$regex": req.body.searchUsername, "$options": "i"}}, function(err, users) {
@@ -100,6 +103,7 @@ exports.searchUsers = (req, res, next) => {
     }).limit(5);
 }
 
+// Create a new direct message
 exports.createDirectMessage = (req, res, next) => {
     User.findOne({username: req.body.hostUsername})
         .then((host) => {
@@ -156,6 +160,7 @@ exports.createDirectMessage = (req, res, next) => {
         })
 }
 
+// Get chats by username
 exports.getChatsByUsername = (req, res, next) => {
     let directMessages = []
     User.findOne({username: req.body.username})
@@ -207,6 +212,7 @@ exports.getChatsByUsername = (req, res, next) => {
         });
 }
 
+// Add a new message to the chat
 exports.addMessageToChat = (req, res, next) => {
     let time = Date.now();
     DirectMessage.findOneAndUpdate( {participants: {$all: [req.body.source, req.body.destination]}}, 
@@ -245,6 +251,7 @@ exports.addMessageToChat = (req, res, next) => {
         
 }
 
+// Get existing direct message chats from a user
 exports.getDirectMessageChat = (req, res, next) => {
     DirectMessage.findOne( {participants: {$all: [req.body.userOne, req.body.userTwo]}})
     .then((dm) => {
@@ -276,7 +283,7 @@ exports.getDirectMessageChat = (req, res, next) => {
 }
 
 
-
+// Send a notification
 const sendNotification =  function(deviceToken, topic, title, body) {
 
       const message = {
